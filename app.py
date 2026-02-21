@@ -208,6 +208,16 @@ def add_report():
         conn.commit()
         conn.close()
 
+        session["last_submission"] = {
+            "district": district,
+            "location": location,
+            "operator_name": operator_name,
+            "mobile": mobile,
+            "new_mmmsy": new_mmmsy,
+            "redo_mmmsy": redo_mmmsy,
+            "today": today
+        }
+
         return redirect("/success")
 
     today = datetime.now().strftime("%d-%m-%Y")
@@ -215,10 +225,23 @@ def add_report():
 
 
 # ---------------- SUCCESS ----------------
+# @app.route("/success")
+# @login_required
+# def success():
+#     return render_template("success.html")
+
 @app.route("/success")
 @login_required
 def success():
-    return render_template("success.html")
+    data = session.get("last_submission")
+
+    if not data:
+        return redirect("/")
+
+    # optional: clear after use
+    session.pop("last_submission", None)
+
+    return render_template("success.html", **data)
 
 
 # ---------------- VIEW ----------------
