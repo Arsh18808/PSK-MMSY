@@ -2,18 +2,15 @@
 {% block content %}
 
 <div class="row justify-content-center">
-    <div class="col-lg-10 col-md-12">
+    <div class="col-lg-8 col-md-10">
         <div class="card shadow-lg p-4 rounded-4">
 
-            <h2 class="text-center text-primary mb-4">
-                MMSY Camp Reporting System
-            </h2>
-
-            <div class="alert alert-info text-center">
-                Transactions for current date only can be entered
-            </div>
+            <h3 class="text-center text-primary mb-4">
+                ✏ Edit MMSY Camp Report
+            </h3>
 
             <form method="POST">
+
                 <div class="row">
 
                     <!-- District -->
@@ -21,29 +18,23 @@
                         <label class="form-label fw-semibold">District</label>
                         <select name="district" class="form-control" required>
                             <option value="">Select District</option>
-                            <option>Amritsar</option>
-                            <option>Barnala</option>
-                            <option>Bathinda</option>
-                            <option>Faridkot</option>
-                            <option>Fatehgarh Sahib</option>
-                            <option>Fazilka</option>
-                            <option>Firozpur (Ferozepur)</option>
-                            <option>Gurdaspur</option>
-                            <option>Hoshiarpur</option>
-                            <option>Jalandhar</option>
-                            <option>Kapurthala</option>
-                            <option>Ludhiana</option>
-                            <option>Malerkotla</option>
-                            <option>Mansa</option>
-                            <option>Moga</option>
-                            <option>Pathankot</option>
-                            <option>Patiala</option>
-                            <option>Rupnagar (Ropar)</option>
-                            <option>S.A.S. Nagar</option>
-                            <option>Sangrur</option>
-                            <option>Shaheed Bhagat Singh Nagar (Nawanshahr)</option>
-                            <option>Sri Muktsar Sahib</option>
-                            <option>Tarn Taran Sahib</option>
+                            {% set districts = [
+                            "Amritsar","Barnala","Bathinda","Faridkot",
+                            "Fatehgarh Sahib","Fazilka","Firozpur (Ferozepur)",
+                            "Gurdaspur","Hoshiarpur","Jalandhar",
+                            "Kapurthala","Ludhiana","Malerkotla",
+                            "Mansa","Moga","Pathankot","Patiala",
+                            "Rupnagar (Ropar)","S.A.S. Nagar",
+                            "Sangrur","Shaheed Bhagat Singh Nagar (Nawanshahr)",
+                            "Sri Muktsar Sahib","Tarn Taran Sahib"
+                            ] %}
+
+                            {% for d in districts %}
+                            <option value="{{ d }}"
+                                {% if report[1] == d %} selected {% endif %}>
+                                {{ d }}
+                            </option>
+                            {% endfor %}
                         </select>
                     </div>
 
@@ -52,15 +43,17 @@
                         <label class="form-label fw-semibold">Camp Location</label>
                         <input type="text"
                                name="location"
+                               value="{{ report[2] }}"
                                class="form-control"
                                required>
                     </div>
 
-                    <!-- Operator -->
+                    <!-- Operator Name -->
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-semibold">Operator Name</label>
                         <input type="text"
                                name="operator_name"
+                               value="{{ report[3] }}"
                                class="form-control"
                                required>
                     </div>
@@ -70,6 +63,7 @@
                         <label class="form-label fw-semibold">Operator Mobile</label>
                         <input type="text"
                                name="mobile"
+                               value="{{ report[4] }}"
                                class="form-control"
                                pattern="[0-9]{10}"
                                maxlength="10"
@@ -84,6 +78,7 @@
                         </label>
                         <input type="number"
                                name="new_mmmsy"
+                               value="{{ report[5] }}"
                                class="form-control"
                                min="0"
                                required>
@@ -96,18 +91,19 @@
                         </label>
                         <input type="number"
                                name="redo_mmmsy"
+                               value="{{ report[6] }}"
                                class="form-control"
                                min="0"
                                required>
                     </div>
 
-                    <!-- Date -->
+                    <!-- Report Date (Read Only) -->
                     <div class="col-md-12 mb-3">
                         <label class="form-label fw-semibold">
                             Reporting Date
                         </label>
                         <input type="text"
-                               value="{{ today }}"
+                               value="{{ report[7] }}"
                                class="form-control"
                                readonly>
                     </div>
@@ -116,16 +112,12 @@
 
                 <!-- Buttons -->
                 <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-primary px-4">
-                        Submit Report
+                    <button type="submit" class="btn btn-success px-4">
+                        Update Record
                     </button>
 
-                    <a href="/view" class="btn btn-success px-4 ms-2">
-                        View Reports
-                    </a>
-
-                    <a href="/export" class="btn btn-warning px-4 ms-2">
-                        Export Excel
+                    <a href="/view" class="btn btn-secondary px-4 ms-2">
+                        Cancel
                     </a>
                 </div>
 

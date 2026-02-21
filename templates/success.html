@@ -1,40 +1,131 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends "base.html" %}
+{% block content %}
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-md-9">
 
-<title>Success</title>
+        <div class="card shadow-lg border-0 p-5 rounded-4 text-center position-relative overflow-hidden">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <!-- Animated Checkmark -->
+            <div class="checkmark-wrapper mb-4">
+                <div class="checkmark-circle">
+                    <div class="checkmark draw"></div>
+                </div>
+            </div>
 
-</head>
+            <h3 class="text-success fw-bold mb-3">
+                Report Submitted Successfully!
+            </h3>
 
-<body>
+            <p class="text-muted mb-4">
+                Redirecting to Home in <span id="countdown">10</span> seconds...
+            </p>
 
-<div class="container mt-5">
+            <!-- Submitted Data Summary -->
+            <div class="bg-light rounded-4 p-4 text-start mb-4 shadow-sm">
+                <h6 class="fw-bold mb-3">Submission Summary</h6>
 
-<div class="card shadow p-4 text-center">
+                <div class="row">
+                    <div class="col-md-6 mb-2"><strong>District:</strong> {{ district }}</div>
+                    <div class="col-md-6 mb-2"><strong>Location:</strong> {{ location }}</div>
+                    <div class="col-md-6 mb-2"><strong>Operator:</strong> {{ operator_name }}</div>
+                    <div class="col-md-6 mb-2"><strong>Mobile:</strong> {{ mobile }}</div>
+                    <div class="col-md-6 mb-2"><strong>New MMSY:</strong> {{ new_mmmsy }}</div>
+                    <div class="col-md-6 mb-2"><strong>Redo MMSY:</strong> {{ redo_mmmsy }}</div>
+                    <div class="col-md-12"><strong>Date:</strong> {{ today }}</div>
+                </div>
+            </div>
 
-<h2 class="text-success">Report Submitted Successfully</h2>
+            <!-- Buttons -->
+            <div class="d-flex justify-content-center flex-wrap gap-3">
+                <a href="/" class="btn btn-primary rounded-pill px-4">
+                    Submit Another
+                </a>
+                <a href="/view" class="btn btn-outline-success rounded-pill px-4">
+                    View Reports
+                </a>
+                <a href="/export" class="btn btn-outline-warning rounded-pill px-4">
+                    Export Excel
+                </a>
+            </div>
 
-<br>
-
-<a href="/" class="btn btn-primary">
-Submit Another
-</a>
-
-<a href="/view" class="btn btn-success">
-View Reports
-</a>
-
-<a href="/export" class="btn btn-warning">
-Export Excel
-</a>
-
+        </div>
+    </div>
 </div>
 
-</div>
+<!-- Success Sound -->
+<audio id="successSound" autoplay>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6e7a54f0c7.mp3?filename=success-1-6297.mp3" type="audio/mpeg">
+</audio>
 
-</body>
-</html>
+<!-- Confetti Script -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+    // Auto redirect countdown
+    let seconds = 10;
+    const countdownEl = document.getElementById("countdown");
+
+    const interval = setInterval(() => {
+        seconds--;
+        countdownEl.innerText = seconds;
+        if (seconds <= 0) {
+            clearInterval(interval);
+            window.location.href = "/";
+        }
+    }, 1000);
+
+    // Confetti burst
+    setTimeout(() => {
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    }, 500);
+</script>
+
+<style>
+/* Animated Checkmark */
+.checkmark-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.checkmark-circle {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.checkmark-circle .background {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #28a745;
+    position: absolute;
+}
+
+.checkmark-circle .checkmark {
+    border-radius: 5px;
+}
+
+.checkmark {
+    transform: rotate(45deg);
+    height: 40px;
+    width: 20px;
+    border-bottom: 5px solid #28a745;
+    border-right: 5px solid #28a745;
+    margin-top: 10px;
+    animation: draw 0.5s ease forwards;
+}
+
+@keyframes draw {
+    0% { height: 0; width: 0; }
+    100% { height: 40px; width: 20px; }
+}
+</style>
+
+{% endblock %}

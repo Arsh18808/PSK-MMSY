@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MMSY Camp Reporting System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.bootstrap5.min.css">
+
+    <!-- Custom Styling -->
+    <style>
+        /* Premium Gradient Navbar */
+        .custom-navbar {
+            background: linear-gradient(135deg, #1f2937, #111827);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+        }
+
+        /* Brand */
+        .navbar-brand {
+            font-size: 1.4rem;
+            letter-spacing: 0.6px;
+        }
+
+        /* Hover Effect */
+        .nav-hover {
+            transition: 0.3s ease;
+            border-radius: 25px;
+            padding: 6px 16px !important;
+        }
+
+        .nav-hover:hover {
+            background-color: rgba(255,255,255,0.15);
+        }
+
+        /* Modern Button */
+        .btn-modern {
+            border-radius: 25px;
+            padding: 6px 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ===== NAVBAR START ===== -->
+<nav class="navbar navbar-expand-lg custom-navbar py-3">
+    <div class="container">
+
+        <!-- App Name -->
+        <a class="navbar-brand text-white fw-bold" href="/">
+            MMSY Camp Reporting
+        </a>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler bg-light" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+
+            <ul class="navbar-nav ms-auto align-items-center">
+
+                <!-- Home -->
+                <li class="nav-item me-3">
+                    <a class="nav-link text-white fw-semibold nav-hover"
+                       href="/">
+                        🏠 Home
+                    </a>
+                </li>
+
+                {% if session.get('user') %}
+                <!-- Logged User -->
+                <li class="nav-item me-3">
+                    <span class="nav-link text-light fw-semibold">
+                        👤 {{ session['user'] }}
+                    </span>
+                </li>
+
+                <!-- Logout -->
+                <li class="nav-item">
+                    <a href="/logout"
+                       class="btn btn-danger btn-modern">
+                        Logout
+                    </a>
+                </li>
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- ===== NAVBAR END ===== -->
+
+
+<!-- ===== MAIN CONTAINER ===== -->
+<div class="container mt-4">
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-warning shadow-sm">
+        {% for msg in messages %}
+        <div>{{ msg }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+{% block scripts %}{% endblock %}
+
+
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    {% with messages = get_flashed_messages() %}
+    {% for msg in messages %}
+    <div class="toast align-items-center text-bg-success border-0 show mb-2">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ msg }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+    {% endfor %}
+    {% endwith %}
+</div>
+
+<script>
+    document.querySelectorAll('.toast').forEach(toastEl => {
+    new bootstrap.Toast(toastEl, { delay: 3000 }).show();
+});
+</script>
+
+</body>
+</html>
